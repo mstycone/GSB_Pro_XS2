@@ -11,6 +11,8 @@
   	   <caption>Eléments forfaitisés </caption>
         <tr>
          <?php
+
+         // Parcourt les frais forfaitisés pour afficher les libellés en en-tête du tableau
          foreach ( $lesFraisForfait as $unFraisForfait ) 
 		 {
 			$libelle = $unFraisForfait['libelle'];
@@ -22,6 +24,7 @@
 		</tr>
         <tr>
         <?php
+            // Parcourt les frais forfaitisés pour afficher les quantités correspondantes
           foreach (  $lesFraisForfait as $unFraisForfait  ) 
 		  {
 				$quantite = $unFraisForfait['quantite'];
@@ -41,8 +44,10 @@
                 <th class='montant'>Montant</th>                
              </tr>
         <?php      
+         // Parcourt les frais hors forfait pour afficher les détails
           foreach ( $lesFraisHorsForfait as $unFraisHorsForfait ) 
 		  {
+     // Récupère la date, le libellé et le montant de chaque frais hors forfait
 			$date = $unFraisHorsForfait['date'];
 			$libelle = $unFraisHorsForfait['libelle'];
 			$montant = $unFraisHorsForfait['montant'];

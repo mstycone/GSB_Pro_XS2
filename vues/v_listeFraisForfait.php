@@ -1,6 +1,8 @@
 <div id="contenu">
       <h2>Renseigner ma fiche de frais du mois <?php echo $numMois."-".$numAnnee ?></h2>
          
+      <!-- 'action=' envoie les données à index.php avec les paramètres --> 
+      <!-- 'uc=' Cela signifie qu'il sera dirigé vers la partie du code qui gère la validation ou la mise à jour des frais forfaitisés -->
       <form method="POST"  action="index.php?uc=gererFrais&action=validerMajFraisForfait">
       <div class="corpsForm">
           
@@ -8,8 +10,10 @@
             <legend>Eléments forfaitisés
             </legend>
 			<?php
+          // Parcourt les frais forfaitisés pour les afficher dans le formulaire
 				foreach ($lesFraisForfait as $unFrais)
 				{
+          // Récupère les informations sur le frais forfaitisé
 					$idFrais = $unFrais['idfrais'];
 					$libelle = $unFrais['libelle'];
 					$quantite = $unFrais['quantite'];
@@ -24,7 +28,7 @@
 			?>
 			
 			
-			
+
 			
            
           </fieldset>
