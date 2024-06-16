@@ -1,5 +1,5 @@
 ﻿<?php
-include("vues/v_sommaire.php");
+include("vues/v_Vsommaire.php");
 
 // Récupère l'action à effectuer depuis la requête
 $action = $_REQUEST['action'];

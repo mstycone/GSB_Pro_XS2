@@ -1,5 +1,5 @@
 <?php
-include("vues/v_sommaire.php");
+include("vues/v_Vsommaire.php");
 
 // Récupère l'identifiant du visiteur depuis la session
 $idvisiteur = $_SESSION['idvisiteur'];
