@@ -41,7 +41,7 @@ switch($action){
       
       //Afficher les sommaires correspondants
       if ($code == 'V'){
-					 include("vues/v_sommaireVisiteur.php");
+		include("vues/v_sommaireVisiteur.php");
       } else {
         include ("vues/v_sommaireComptable.php"); //modif à faire du v_sommaire.php pour les comptables
       }

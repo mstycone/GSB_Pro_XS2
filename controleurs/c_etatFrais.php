@@ -1,17 +1,18 @@
 ﻿<?php
-include("vues/v_Vsommaire.php");
+include("vues/v_sommaireVisiteur.php");
+include("vues/v_sommaireComptable.php");
 
 // Récupère l'action à effectuer depuis la requête
 $action = $_REQUEST['action'];
 
 // Récupère l'identifiant du visiteur depuis la session
-$idvisiteur = $_SESSION['idvisiteur'];
+$idemploye = $_SESSION['idemploye'];
 
 // Utilisation d'un switch pour gérer les différentes actions possibles
 switch($action){
 	case 'selectionnerMois':{
-        // Récupère les mois disponibles pour le visiteur
-		$lesMois=$pdo->getLesMoisDisponibles($idvisiteur);
+        // Récupère les mois disponibles pour l'employe (visiteur)
+		$lesMois=$pdo->getLesMoisDisponibles($idemploye);
 		// Afin de sélectionner par défaut le dernier mois dans la zone de liste
 		// on demande toutes les clés, et on prend la première,
 		// les mois étant triés décroissants
@@ -23,17 +24,17 @@ switch($action){
 	case 'voirEtatFrais':{
 		$leMois = $_REQUEST['lstMois']; 
 
-        // Récupère les mois disponibles pour le visiteur
-		$lesMois=$pdo->getLesMoisDisponibles($idvisiteur);
+        // Récupère les mois disponibles pour l'employe (visiteur)
+		$lesMois=$pdo->getLesMoisDisponibles($idemploye);
 		$moisASelectionner = $leMois;
 		include("vues/v_listeMois.php");
 
         // Récupère les frais hors forfait pour le mois sélectionné
-		$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idvisiteur,$leMois);
+		$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idemploye,$leMois);
 		// Récupère les frais forfait pour le mois sélectionné
-		$lesFraisForfait= $pdo->getLesFraisForfait($idvisiteur,$leMois);
+		$lesFraisForfait= $pdo->getLesFraisForfait($idemploye,$leMois);
 		// Récupère les informations du mois sélectionné
-		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idvisiteur,$leMois);
+		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idemploye,$leMois);
 		
         // Extrait l'année et le mois du mois sélectionné
 		$numAnnee =substr( $leMois,0,4);

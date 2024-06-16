@@ -7,17 +7,17 @@
       </div>  
         <ul id="menuList">
 			<li >
-				  visiteur :<br>
-            <!-- Affichage des informations sur le visiteur -->
+				  comptable :<br>
+            <!-- Affichage des informations sur le comptable -->
 				<?php echo $_SESSION['prenom']."  ".$_SESSION['nom']  ?>
 			</li>
            <li class="smenu">
-            <!-- Lien pour la saisie de la fiche de frais -->
-              <a href="index.php?uc=gererFrais&action=saisirFrais" title="Saisie fiche de frais ">Saisie fiche de frais</a>
+            <!-- Lien pour valider la fiche de frais -->
+              <a href="index.php?uc=gererFrais&action=validerCreationFrais" title="Valider fiche de frais ">Valider fiche de frais</a>
            </li>
            <li class="smenu">
-            <!-- Lien pour la consultation des fiches de frais -->
-              <a href="index.php?uc=etatFrais&action=selectionnerMois" title="Consultation de mes fiches de frais">Mes fiches de frais</a>
+            <!-- Lien pour le suivie du paiement des fiches de frais -->
+              <a href="index.php?uc=gererFrais&action=validerMajFraisForfait" title="Suivre paiement fiches de frais">Suivre paiement fiches de frais</a>
            </li>
  	   <li class="smenu">
             <!-- Lien pour la déconnexion -->
