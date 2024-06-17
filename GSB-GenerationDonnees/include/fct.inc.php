@@ -71,7 +71,7 @@ function getMoisPrecedent($mois){
 
 //Clôture toutes les fiches du mois écoulé
 function clotureFichesMoisPrecedent($pdo){
-		//Appel de la ƒ getMoisPrecedent pour avoir le mois écoulé 
+		//Appel de la fonction getMoisPrecedent pour avoir le mois écoulé 
 		$moisActuel = date ('Ym');
 		$moisPrecedent = getMoisPrecedent($moisActuel);
 		//Requête de màj pour la clôture 

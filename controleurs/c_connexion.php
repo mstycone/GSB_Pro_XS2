@@ -18,7 +18,7 @@ switch($action){
 		$login = $_REQUEST['login'];
 		$mdp = $_REQUEST['mdp'];
 
-        // Récupère les informations du visiteur correspondant au login et mot de passe fournis
+        // Récupère les informations de l'employé correspondant au login et mot de passe fournis
 		$employe = $pdo->getInfosEmploye($login,$mdp);
 
         // Vérifie si les informations de connexion sont correctes
