@@ -34,7 +34,7 @@ switch($action){
 			$id = $employe['id'];
 			$nom =  $employe['nom'];
 			$prenom = $employe['prenom'];
-            $code = $employe['typeEmploye']; //ici récupère le type d'employé
+            $code = $employe['idtypeEmploye']; //ici récupère le type d'employé
 
       // Fonction pour connecter l'utilisateur
 			connecter($id,$nom,$prenom,$code);
