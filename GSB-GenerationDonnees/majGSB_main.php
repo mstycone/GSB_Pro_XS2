@@ -39,7 +39,6 @@ creationFichesFrais($pdo, $moisDebut);
 creationFraisForfait($pdo);
 creationFraisHorsForfait($pdo);
 majFicheFrais($pdo);
-clotureFichesMoisPrecedent($pdo); //Clôture toutes les fiches du mois écoulé
 
 } catch (PDOException $e) {
 	// Capture et affiche les erreurs PDO

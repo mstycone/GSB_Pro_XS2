@@ -1,8 +1,8 @@
 
 <ul>
 <?php
-       // Récupère l'identifiant du visiteur depuis la session
-	  $id = $_SESSION['idvisiteur'];
+       // Récupère l'identifiant de l'employé depuis la session
+	  $id = $_SESSION['idemploye'];
         
       echo "bonjour $id <a href='Deconnexion.php' >Deconnexion</a>";
 

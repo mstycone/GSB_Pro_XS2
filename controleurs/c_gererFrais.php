@@ -2,7 +2,12 @@
 include("vues/v_sommaireVisiteur.php");
 
 // Récupère l'identifiant du visiteur depuis la session
-$idvisiteur = $_SESSION['idvisiteur'];
+$idemploye = $_SESSION['idemploye'];
+
+if ($_SESSION['idtypeEmploye'] !== 'V') {
+	include('vues/v_erreurs.php');
+	exit(); 
+}
 
 // Récupère le mois actuel au format aaaamm
 $mois = getMois(date("d/m/Y"));

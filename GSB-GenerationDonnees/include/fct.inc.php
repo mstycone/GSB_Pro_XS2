@@ -1,14 +1,14 @@
 <?php
 
-// Récupère tous les visiteurs
-function getLesVisiteurs($pdo)
+// Récupère tous les employés
+function getLesEmployes($pdo)
 {
-		$req = "select * from visiteur";
+		$req = "select * from employe";
 		// Exécute la requête
 		$res = $pdo->query($req);
 		// Récupère toutes les lignes de résultat
 		$lesLignes = $res->fetchAll();
-		// Retourne les lignes de visiteurs
+		// Retourne les lignes des employés
 		return $lesLignes;
 }
 // Récupère toutes les fiches de frais
@@ -28,9 +28,9 @@ function getLesIdFraisForfait($pdo)
 		return $lesLignes;
 }
 // Récupère le dernier mois des fiches de frais pour un visiteur donné
-function getDernierMois($pdo, $idvisiteur)
+function getDernierMois($pdo, $idemploye)
 {
-		$req = "select max(mois) as dernierMois from fichefrais where idvisiteur = '$idvisiteur'";
+		$req = "select max(mois) as dernierMois from fichefrais where idemploye = '$idemploye'";
 		$res = $pdo->query($req);
 		$laLigne = $res->fetch();
 		return $laLigne['dernierMois'];
@@ -80,18 +80,18 @@ function clotureFichesMoisPrecedent($pdo){
 		$pdo->exec($req);
 }
 
-// Crée des fiches de frais pour chaque visiteur à partir d'un mois donné
+// Crée des fiches de frais pour chaque employe à partir d'un mois donné
 function creationFichesFrais($pdo, $moisDebut)
 {
-	$lesVisiteurs = getLesVisiteurs($pdo); // Récupère tous les visiteurs
+	$lesEmployes = getLesEmployes($pdo); // Récupère tous les employés
 	$moisActuel = getMois(date("d/m/Y")); // Récupère le mois actuel
 	$moisFin = getMoisPrecedent($moisActuel); // Calcule le mois précédent
-	foreach($lesVisiteurs as $unVisiteur)
+	foreach($lesEmployes as $unEmploye)
 	{
-		// Pour chaque visiteur, initialise moisCourant avec le mois de fin
+		// Pour chaque employe, initialise moisCourant avec le mois de fin
 		$moisCourant = $moisFin; 
-       // Récupère l'identifiant du visiteur
-		$idvisiteur = $unVisiteur['id'];
+       // Récupère l'identifiant de l'employe
+		$idemploye = $unEmploye['id'];
       // Initialise un compteur à 1 pour suivre le nombre de fiches créées
 		$n = 1;
 
@@ -132,8 +132,8 @@ function creationFichesFrais($pdo, $moisDebut)
 
 			$nbjustificatifs = rand(0,12); // Génère un nombre aléatoire de justificatifs
 			 // Prépare la requête SQL pour insérer une nouvelle fiche de frais
-			$req = "insert into fichefrais(idvisiteur,mois,nbjustificatifs,montantvalide,datemodif,idetat) 
-			values ('$idvisiteur','$moisCourant',$nbjustificatifs,0,'$datemodif','$etat');";
+			$req = "insert into fichefrais(idemploye,mois,nbjustificatifs,montantvalide,datemodif,idetat) 
+			values ('$idemploye','$moisCourant',$nbjustificatifs,0,'$datemodif','$etat');";
 			$pdo->exec($req);
 			// Met à jour moisCourant pour le mois précédent
 			$moisCourant = getMoisPrecedent($moisCourant); // Passe au mois précédent
@@ -149,7 +149,7 @@ function creationFraisForfait($pdo)
 	$lesIdFraisForfait = getLesIdFraisForfait($pdo); // Récupère tous les IDs des frais forfait
 	foreach($lesFichesFrais as $uneFicheFrais)
 	{
-		$idvisiteur = $uneFicheFrais['idvisiteur'];
+		$idemploye = $uneFicheFrais['idemploye'];
 		$mois =  $uneFicheFrais['mois'];
 		foreach($lesIdFraisForfait as $unIdFraisForfait)
 		{
@@ -162,8 +162,8 @@ function creationFraisForfait($pdo)
 			{
 				$quantite =rand(2,20); // Quantité aléatoire pour autres frais forfaitaires
 			}
-			$req = "insert into lignefraisforfait(idvisiteur,mois,idfraisforfait,quantite)
-			values('$idvisiteur','$mois','$idfraisforfait',$quantite);"; // Insère une nouvelle ligne de frais forfait
+			$req = "insert into lignefraisforfait(idemploye,mois,idfraisforfait,quantite)
+			values('$idemploye','$mois','$idfraisforfait',$quantite);"; // Insère une nouvelle ligne de frais forfait
 			$pdo->exec($req);	
 		}
 	}
@@ -227,14 +227,14 @@ function getDesFraisHorsForfait()
 //MàJ les mots de passe des visiteurs en générant un mot de passe aléatoire de 5 caractères.
 function updateMdpVisiteur($pdo)
 {
-	$req = "select * from visiteur";
+	$req = "select * from employe";
 		$res = $pdo->query($req);
 		$lesLignes = $res->fetchAll();
 		$lettres ="azertyuiopqsdfghjkmwxcvbn123456789";
-		foreach($lesLignes as $unVisiteur)
+		foreach($lesLignes as $unEmploye)
 		{
 			$mdp = "";
-			$id = $unVisiteur['id'];
+			$id = $unEmploye['id'];
 			for($i =1;$i<=5;$i++)
 			{
             // Génère une lettre aléatoire parmi les lettres disponibles.
@@ -242,7 +242,7 @@ function updateMdpVisiteur($pdo)
 				$mdp = $mdp.$uneLettrehasard;
 			}
 			
-			$req = "update visiteur set mdp ='$mdp' where visiteur.id ='$id' ";
+			$req = "update employe set mdp ='$mdp' where employe.id ='$id' ";
 			$pdo->exec($req);
 		}
 
@@ -259,8 +259,8 @@ function creationFraisHorsForfait($pdo)
     // Pour chaque fiche de frais
 	foreach($lesFichesFrais as $uneFicheFrais)
 	{
-		// ID du visiteur pour la fiche de frais
-		$idvisiteur = $uneFicheFrais['idvisiteur']; 
+		// ID de l'employe pour la fiche de frais
+		$idemploye = $uneFicheFrais['idemploye']; 
 		// Mois de la fiche de frais
 		$mois =  $uneFicheFrais['mois'];
 
@@ -294,8 +294,8 @@ function creationFraisHorsForfait($pdo)
 			$hasardMois = $numAnnee."-".$numMois."-".$hasardJour;
 
             // Prépare et exécute la requête SQL pour insérer le frais hors forfait dans la base de données
-			$req = "insert into lignefraishorsforfait(idvisiteur,mois,libelle,date,montant)
-			values('$idvisiteur','$mois',$lib,'$hasardMois',$hasardMontant);";
+			$req = "insert into lignefraishorsforfait(idemploye,mois,libelle,date,montant)
+			values('$idemploye','$mois',$lib,'$hasardMois',$hasardMontant);";
 			$pdo->exec($req);
 		}
 	}
@@ -315,13 +315,13 @@ function majFicheFrais($pdo)
 	$lesFichesFrais= getLesFichesFrais($pdo);
 	foreach($lesFichesFrais as $uneFicheFrais)
 	{
-		$idvisiteur = $uneFicheFrais['idvisiteur'];
+		$idemploye = $uneFicheFrais['idemploye'];
 		$mois =  $uneFicheFrais['mois'];
-		$dernierMois = getDernierMois($pdo, $idvisiteur);
+		$dernierMois = getDernierMois($pdo, $idemploye);
 
         // Calcule le total des montants des frais hors forfait pour ce visiteur et ce mois.
-		$req = "select sum(montant) as cumul from lignefraishorsforfait where lignefraishorsforfait.idvisiteur 
-			= '$idvisiteur' and lignefraishorsforfait.mois = '$mois' ";
+		$req = "select sum(montant) as cumul from lignefraishorsforfait where lignefraishorsforfait.idemploye 
+			= '$idemploye' and lignefraishorsforfait.mois = '$mois' ";
 		$res = $pdo->query($req);
 		$ligne = $res->fetch();
 		$cumulMontantHorsForfait = $ligne['cumul'];
@@ -329,7 +329,7 @@ function majFicheFrais($pdo)
         // Calcule le total des montants des frais forfaitaires pour ce visiteur et ce mois.
 		$req = "select sum(lignefraisforfait.quantite * fraisforfait.montant) as cumul from lignefraisforfait, fraisforfait 
 			 where lignefraisforfait.idfraisforfait = fraisforfait.id   
-                           and lignefraisforfait.idvisiteur = '$idvisiteur' and lignefraisforfait.mois = '$mois' ";
+                           and lignefraisforfait.idemploye = '$idemploye' and lignefraisforfait.mois = '$mois' ";
 		$res = $pdo->query($req);
 		$ligne = $res->fetch();
 		$cumulMontantForfait = $ligne['cumul'];
@@ -342,7 +342,7 @@ function majFicheFrais($pdo)
 		else
 			$montantvalide = $montantEngage*rand(80,100)/100;
 		$req = "update fichefrais set montantvalide =$montantvalide where
-		idvisiteur = '$idvisiteur' and mois='$mois'";
+		idemploye = '$idemploye' and mois='$mois'";
 		$pdo->exec($req);
 		
 	}

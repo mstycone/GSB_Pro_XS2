@@ -4,8 +4,13 @@ include("vues/v_sommaireVisiteur.php");
 // Récupère l'action à effectuer depuis la requête
 $action = $_REQUEST['action'];
 
-// Récupère l'identifiant du visiteur depuis la session
+// Récupère l'identifiant de l'empoyé depuis la session
 $idemploye = $_SESSION['idemploye'];
+
+if ($_SESSION['idtypeEmploye'] !== 'V') {
+	include('vues/v_erreurs.php');
+	exit(); 
+}
 
 // Utilisation d'un switch pour gérer les différentes actions possibles
 switch($action){
