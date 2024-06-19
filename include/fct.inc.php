@@ -22,7 +22,7 @@ function estConnecte(){
  * @param $code
  */
 function connecter($id,$nom,$prenom,$code){
-	$_SESSION['idvisiteur']= $id; 
+	$_SESSION['idemploye']= $id; 
 	$_SESSION['nom']= $nom;
 	$_SESSION['prenom']= $prenom;
 	$_SESSION['idtypeEmploye']=$code;

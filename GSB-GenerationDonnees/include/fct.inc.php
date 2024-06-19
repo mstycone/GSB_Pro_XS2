@@ -11,6 +11,24 @@ function getLesEmployes($pdo)
 		// Retourne les lignes des employés
 		return $lesLignes;
 }
+
+// Récupère tous les visiteurs
+function getLesVisiteurs($pdo)
+{		//Préparation de la requête SQL
+		$req = $pdo->prepare("select * from employe where idtypeEmploye = :idemploye; ");
+
+		//Liaision de Paramètres 
+		$idtypeEmploye = 'V';
+		$req->bindParam(':idtypeEmploye', $idtypeEmploye, PDO::PARAM_STR);
+		
+		$req->execute(); //exécute la requête préparée
+		
+		$res = $pdo->query($req);// Exécute la requête
+		
+		$lesLignes = $res->fetchAll();// Récupère toutes les lignes de résultat
+		
+		return $lesLignes;// Retourne les lignes des visiteurs
+}
 // Récupère toutes les fiches de frais
 function getLesFichesFrais($pdo)
 {
@@ -71,13 +89,18 @@ function getMoisPrecedent($mois){
 
 //Clôture toutes les fiches du mois écoulé
 function clotureFichesMoisPrecedent($pdo){
-		//Appel de la fonction getMoisPrecedent pour avoir le mois écoulé 
-		$moisActuel = date ('Ym');
-		$moisPrecedent = getMoisPrecedent($moisActuel);
-		//Requête de màj pour la clôture 
-		$req= "update fichefrais set idetat = 'CL', datemodif = NOW() where mois='$moisPrecedent' and idetat = 'CR';";
-		//Exécute la requête
-		$pdo->exec($req);
+	//Appel de la fonction getMoisPrecedent pour avoir le mois écoulé 
+	$moisActuel = date ('Ym');
+	$moisPrecedent = getMoisPrecedent($moisActuel);
+
+	//Préparation de la requête de màj pour la clôture pour éviter les injections SQL 
+	$req= $pdo->prepare("update fichefrais set idetat = 'CL', datemodif = NOW() where mois= :moisPrecedent and idetat = 'CR';");
+
+    //Liaison de paramètre pour échapper les données = prévention injections SQL 
+    $req->bindParam(':moisPrecedent', $moisPrecedent, PDO::PARAM_STR);
+
+	//Exécute la requête préparé
+	$req->execute();
 }
 
 // Crée des fiches de frais pour chaque employe à partir d'un mois donné
