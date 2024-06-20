@@ -14,6 +14,12 @@ switch($action){
         // Le 'break' empêche l'exécution des cases suivantes après 'demandeConnexion'
 		break;
 	}
+	 // Cas où l'action est 'déconnexion'
+	 case 'deconnexion':{
+		include("vues/v_deconnexion.php");
+        // Le 'break' empêche l'exécution des cases suivantes après 'demandeConnexion'
+		break;
+	}
 	case 'valideConnexion':{
 		$login = $_REQUEST['login'];
 		$mdp = $_REQUEST['mdp'];

@@ -251,7 +251,7 @@ class PdoGsb{
  * @return un tableau associatif de clé un mois -aaaamm- et de valeurs l'année et le mois correspondant 
 */
 	public function getLesMoisDisponibles($idemploye){
-		$req = "select fichefrais.mois as mois from  fichefrais where fichefrais.idvisiteur ='$idemploye' 
+		$req = "select fichefrais.mois as mois from  fichefrais where fichefrais.idemploye ='$idemploye' 
 		order by fichefrais.mois desc ";
 		$res = PdoGsb::$monPdo->query($req);
 		$lesMois =array();
@@ -269,6 +269,31 @@ class PdoGsb{
 		}
 		return $lesMois;
 	}
+/**
+ * Retourne les mois pour lesquel un visiteur a une fiche de frais à valider
+ 
+ * @param $idemploye 
+ * @return un tableau associatif de clé un mois -aaaamm- et de valeurs l'année et le mois correspondant 
+*/
+public function getLesMoisDisponiblesAValider($idemploye){
+	$req = "select fichefrais.mois as mois from  fichefrais where fichefrais.idemploye ='$idemploye' 
+	and fichefrais.idetat = 'CL' order by fichefrais.mois desc ";
+	$res = PdoGsb::$monPdo->query($req);
+	$lesMois =array();
+	$laLigne = $res->fetch();
+	while($laLigne != null)	{
+		$mois = $laLigne['mois'];
+		$numAnnee =substr( $mois,0,4);
+		$numMois =substr( $mois,4,2);
+		$lesMois["$mois"]=array(
+		 "mois"=>"$mois",
+		"numAnnee"  => "$numAnnee",
+		"numMois"  => "$numMois"
+		 );
+		$laLigne = $res->fetch(); 		
+	}
+	return $lesMois;
+}
 /**
  * Retourne les informations d'une fiche de frais d'un visiteur pour un mois donné
  

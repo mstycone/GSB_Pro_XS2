@@ -14,21 +14,16 @@ function getLesEmployes($pdo)
 
 // Récupère tous les visiteurs
 function getLesVisiteurs($pdo)
-{		//Préparation de la requête SQL
-		$req = $pdo->prepare("select * from employe where idtypeEmploye = :idemploye; ");
-
-		//Liaision de Paramètres 
-		$idtypeEmploye = 'V';
-		$req->bindParam(':idtypeEmploye', $idtypeEmploye, PDO::PARAM_STR);
-		
-		$req->execute(); //exécute la requête préparée
-		
-		$res = $pdo->query($req);// Exécute la requête
-		
-		$lesLignes = $res->fetchAll();// Récupère toutes les lignes de résultat
-		
-		return $lesLignes;// Retourne les lignes des visiteurs
+{
+		$req = "select * from employe where idtypeEmploye = 'V' order by nom";
+		// Exécute la requête
+		$res = $pdo->query($req);
+		// Récupère toutes les lignes de résultat
+		$lesLignes = $res->fetchAll();
+		// Retourne les lignes des employés
+		return $lesLignes;
 }
+
 // Récupère toutes les fiches de frais
 function getLesFichesFrais($pdo)
 {
@@ -48,10 +43,11 @@ function getLesIdFraisForfait($pdo)
 // Récupère le dernier mois des fiches de frais pour un visiteur donné
 function getDernierMois($pdo, $idemploye)
 {
-		$req = "select max(mois) as dernierMois from fichefrais where idemploye = '$idemploye'";
-		$res = $pdo->query($req);
-		$laLigne = $res->fetch();
-		return $laLigne['dernierMois'];
+		$req = $pdo->prepare("select max(mois) as dernierMois from fichefrais where idemploye = :idemploye");
+		$req->bindParam(':idemploye', $idemploye, PDO::PARAM_STR);
+		$req->execute();
+		$laLigne = $req->fetch(PDO::FETCH_ASSOC);
+		return $laLigne ? $laLigne['dernierMois'] : null;
 
 }
 // Calcule le mois suivant à partir d'un mois donné
