@@ -29,6 +29,7 @@ switch($action){
 		$lesMois=$pdo->getLesMoisDisponiblesAValider();
 		include("vues/v_selectionFicheFrais.php");
 
+        if (isset($_POST['lstVisiteur']) && isset($_POST['lstMois'])) {
 		$idVisiteur = $_POST['lstVisiteur'];
         $leMois = $_POST['lstMois'];
 
@@ -63,8 +64,13 @@ switch($action){
 		//Ici on pourrait rajouter un 'break'
 		break;
 		}
-	}
-	case 'mettrePaiement':{
+	  } else {  
+		ajouterErreur("Les champs visiteur et mois doivent être sélectionnés.");
+		include("vues/v_erreurs.php");
+	  } 
+	  break;
+	} 
+    case 'mettrePaiement':{
 		$idemploye = $_REQUEST['idemploye'];
 		$mois = $_REQUEST['mois'];
 		$pdo->majEtatFicheFrais($idemploye, $mois, 'VA');

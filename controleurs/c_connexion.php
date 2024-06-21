@@ -28,7 +28,7 @@ switch($action){
 		$employe = $pdo->getInfosEmploye($login,$mdp);
 
         // Vérifie si les informations de connexion sont correctes
-		if(!is_array( $employe)){
+		if(!$employe){
 
             // Si les informations sont incorrectes, ajoute une erreur et inclut les vues d'erreur et de connexion
 			ajouterErreur("Login ou mot de passe incorrect");

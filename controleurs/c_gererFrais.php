@@ -9,8 +9,8 @@ $idemploye = $_SESSION['idemploye'];
 $mois = getMois(date("d/m/Y"));
 
 // Extrait l'année et le mois du format aaaamm
-$numAnnee =substr( $mois,0,4);
-$numMois =substr( $mois,4,2);
+$numAnnee =substr($mois,0,4);
+$numMois =substr($mois,4,2);
 
 // Récupère l'action à effectuer depuis la requête
 $action = $_REQUEST['action'];
