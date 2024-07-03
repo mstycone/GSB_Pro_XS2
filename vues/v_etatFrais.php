@@ -61,12 +61,6 @@
           }
 		?>
     </table>
-    <form action="index.php?uc=etatfrais&action=mettrePaiement" method="post">
-            <input type="hidden" name="idemploye" value="<?php echo $idemploye; ?>">
-            <input type="hidden" name="mois" value="<?php echo $mois; ?>">
-            <input type="submit" value="Valide et Mettre en paiement" formaction="index.php?uc=etatfrais&action=mettrePaiement">
-            <input type="submit" value="Marqué comme payéé" formaction="index.php?uc=etatfrais&action=fichePaye">
-    </form>
   </div>
   </div>
  

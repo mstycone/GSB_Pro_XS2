@@ -1,5 +1,5 @@
 ﻿    <!-- Division pour le sommaire -->
-  <!-- À modifier selon les caractéristiques du comptable-->
+  <!-- À adapter pour les comptables -->
     <div id="menuGauche">
      <div id="infosUtil">
     
@@ -8,17 +8,17 @@
       </div>  
         <ul id="menuList">
 			<li >
-				  visiteur :<br>
-            <!-- Affichage des informations sur le visiteur -->
+				  Comptable :<br>
+            <!-- Affichage des informations sur le comptable -->
 				<?php echo $_SESSION['prenom']."  ".$_SESSION['nom']  ?>
 			</li>
            <li class="smenu">
             <!-- Lien pour la saisie de la fiche de frais -->
-              <a href="index.php?uc=gererFrais&action=saisirFrais" title="Saisie fiche de frais ">Saisie fiche de frais</a>
+              <a href="index.php?uc=suivreFrais&action=afficheFicheFraisAValider" title="Suivre le paiement fiche de frais ">Suivre le paiement fiche de frais</a>
            </li>
            <li class="smenu">
             <!-- Lien pour la consultation des fiches de frais -->
-              <a href="index.php?uc=etatFrais&action=selectionnerMois" title="Consultation de mes fiches de frais">Mes fiches de frais</a>
+              <a href="index.php?uc=validerFrais&action=" title="Valider fiches de frais">Valider fiches de frais</a>
            </li>
  	   <li class="smenu">
             <!-- Lien pour la déconnexion -->
@@ -27,4 +27,5 @@
          </ul>
         
     </div>
+    
     

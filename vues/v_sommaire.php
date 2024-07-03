@@ -1,4 +1,5 @@
 ﻿    <!-- Division pour le sommaire -->
+    <!-- Sommaire visiteur -->
     <div id="menuGauche">
      <div id="infosUtil">
     
@@ -7,7 +8,7 @@
       </div>  
         <ul id="menuList">
 			<li >
-				  visiteur :<br>
+				  Visiteur :<br>
             <!-- Affichage des informations sur le visiteur -->
 				<?php echo $_SESSION['prenom']."  ".$_SESSION['nom']  ?>
 			</li>

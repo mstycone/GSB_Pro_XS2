@@ -1,18 +1,17 @@
 ﻿<?php
-include("vues/v_sommaireVisiteur.php");
-include("vues/v_sommaireComptable.php");
+include("vues/v_sommaire.php");
 
 // Récupère l'action à effectuer depuis la requête
 $action = $_REQUEST['action'];
 
-// Récupère l'identifiant de l'empoyé depuis la session
-$idemploye = $_SESSION['idemploye'];
+// Récupère l'identifiant du visiteur depuis la session
+$idvisiteur = $_SESSION['idvisiteur'];
 
 // Utilisation d'un switch pour gérer les différentes actions possibles
 switch($action){
 	case 'selectionnerMois':{
-        // Récupère les mois disponibles pour l'employe (visiteur)
-		$lesMois=$pdo->getLesMoisDisponibles($idemploye);
+        // Récupère les mois disponibles pour le visiteur
+		$lesMois=$pdo->getLesMoisDisponibles($idvisiteur);
 		// Afin de sélectionner par défaut le dernier mois dans la zone de liste
 		// on demande toutes les clés, et on prend la première,
 		// les mois étant triés décroissants
@@ -21,32 +20,20 @@ switch($action){
 		include("vues/v_listeMois.php");
 		break;
 	}
-	case 'voirEtatFrais':{ 
-		
-		// Récupération des visiteurs
-        $lesVisiteurs = $pdo->getLesVisiteurs();
-        // Récupère les mois disponibles pour les visiteurs
-		$lesMois=$pdo->getLesMoisDisponiblesAValider();
-		include("vues/v_selectionFicheFrais.php");
+	case 'voirEtatFrais':{
+		$leMois = $_REQUEST['lstMois']; 
 
-        if (isset($_POST['lstVisiteur']) && isset($_POST['lstMois'])) {
-		$idVisiteur = $_POST['lstVisiteur'];
-        $leMois = $_POST['lstMois'];
+        // Récupère les mois disponibles pour le visiteur
+		$lesMois=$pdo->getLesMoisDisponibles($idvisiteur);
+		$moisASelectionner = $leMois;
+		include("vues/v_listeMois.php");
 
-		// Récupère les informations du mois sélectionné
-		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idVisiteur,$leMois);
-
-        // Vérifie si une fiche de frais existe
-		if (!$lesInfosFicheFrais) {
-			ajouterErreur("Pas de fiche de frais pour ce visiteur ce mois.");
-			include("vues/v_erreurs.php");
-			header('Location: index.php?uc=etatfrais&action=voirEtatFrais');
-			exit();
-		} else {
         // Récupère les frais hors forfait pour le mois sélectionné
-		$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur,$leMois);
+		$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idvisiteur,$leMois);
 		// Récupère les frais forfait pour le mois sélectionné
-		$lesFraisForfait= $pdo->getLesFraisForfait($idVisiteur,$leMois);
+		$lesFraisForfait= $pdo->getLesFraisForfait($idvisiteur,$leMois);
+		// Récupère les informations du mois sélectionné
+		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idvisiteur,$leMois);
 		
         // Extrait l'année et le mois du mois sélectionné
 		$numAnnee =substr( $leMois,0,4);
@@ -62,29 +49,6 @@ switch($action){
 		$datemodif =  dateAnglaisVersFrancais($datemodif);
 		include("vues/v_etatFrais.php");
 		//Ici on pourrait rajouter un 'break'
-		break;
-		}
-	  } else {  
-		ajouterErreur("Les champs visiteur et mois doivent être sélectionnés.");
-		include("vues/v_erreurs.php");
-	  } 
-	  break;
-	} 
-    case 'mettrePaiement':{
-		$idemploye = $_REQUEST['idemploye'];
-		$mois = $_REQUEST['mois'];
-		$pdo->majEtatFicheFrais($idemploye, $mois, 'VA');
-		header('Location: index.php?uc=etatfrais&action=voirEtatFrais');
-		exit();
-		break;
-	}
-	case 'fichePaye':{
-		$idemploye = $_REQUEST['idemploye'];
-		$mois = $_REQUEST['mois'];
-		$pdo->majEtatFicheFrais($idemploye, $mois, 'RB');
-		header('Location: index.php?uc=etatfrais&action=voirEtatFrais');
-		exit();
-		break;
 	}
 }
 ?>

@@ -1,25 +1,24 @@
 <?php
-include("vues/v_sommaireVisiteur.php");
-include("vues/v_sommaireComptable.php");
+include("vues/v_sommaire.php");
 
-// Récupère l'identifiant de l'employé depuis la session
-$idemploye = $_SESSION['idemploye'];
+// Récupère l'identifiant du visiteur depuis la session
+$idvisiteur = $_SESSION['idvisiteur'];
 
 // Récupère le mois actuel au format aaaamm
 $mois = getMois(date("d/m/Y"));
 
 // Extrait l'année et le mois du format aaaamm
-$numAnnee =substr($mois,0,4);
-$numMois =substr($mois,4,2);
+$numAnnee =substr( $mois,0,4);
+$numMois =substr( $mois,4,2);
 
 // Récupère l'action à effectuer depuis la requête
 $action = $_REQUEST['action'];
 switch($action){
 	case 'saisirFrais':{
-        // Vérifie si c'est le premier frais du mois pour l'employe (visiteur)
-		if($pdo->estPremierFraisMois($idemploye,$mois)){
-            // Crée de nouvelles lignes de frais pour l'employe (visiteur) pour le mois courant
-			$pdo->creeNouvellesLignesFrais($idemploye,$mois);
+        // Vérifie si c'est le premier frais du mois pour le visiteur
+		if($pdo->estPremierFraisMois($idvisiteur,$mois)){
+            // Crée de nouvelles lignes de frais pour le visiteur pour le mois courant
+			$pdo->creeNouvellesLignesFrais($idvisiteur,$mois);
 		}
 		break;
 	}
@@ -29,8 +28,8 @@ switch($action){
 
         // Vérifie si les quantités de frais sont valides
 		if(lesQteFraisValides($lesFrais)){
-            // Met à jour les frais forfaitisés pour l'employe (comptable) pour le mois courant
-	  	 	$pdo->majFraisForfait($idemploye,$mois,$lesFrais);
+            // Met à jour les frais forfaitisés pour le visiteur pour le mois courant
+	  	 	$pdo->majFraisForfait($idvisiteur,$mois,$lesFrais);
 		}
 		else{
 			ajouterErreur("Les valeurs des frais doivent être numériques");
@@ -52,8 +51,8 @@ switch($action){
 			include("vues/v_erreurs.php");
 		}
 		else{
-            // Crée un nouveau frais hors forfait pour l'employe (comptable) pour le mois courant
-			$pdo->creeNouveauFraisHorsForfait($idemploye,$mois,$libelle,$dateFrais,$montant);
+            // Crée un nouveau frais hors forfait pour le visiteur pour le mois courant
+			$pdo->creeNouveauFraisHorsForfait($idvisiteur,$mois,$libelle,$dateFrais,$montant);
 		}
 		break;
 	}
@@ -67,8 +66,8 @@ switch($action){
 	}
 }
 // Récupère les frais hors forfait et forfaitisés pour le visiteur pour le mois courant
-$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idemploye,$mois);
-$lesFraisForfait= $pdo->getLesFraisForfait($idemploye,$mois);
+$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idvisiteur,$mois);
+$lesFraisForfait= $pdo->getLesFraisForfait($idvisiteur,$mois);
 
 include("vues/v_listeFraisForfait.php");
 include("vues/v_listeFraisHorsForfait.php");
