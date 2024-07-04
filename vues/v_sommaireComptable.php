@@ -14,7 +14,7 @@
 			</li>
            <li class="smenu">
             <!-- Lien pour la saisie de la fiche de frais -->
-              <a href="index.php?uc=suivreFrais&action=afficheFicheFraisAValider" title="Suivre le paiement fiche de frais ">Suivre le paiement fiche de frais</a>
+              <a href="index.php?uc=suivreFrais&action=selectionnerVisiteur" title="Suivre le paiement fiche de frais ">Suivre le paiement fiche de frais</a>
            </li>
            <li class="smenu">
             <!-- Lien pour la consultation des fiches de frais -->

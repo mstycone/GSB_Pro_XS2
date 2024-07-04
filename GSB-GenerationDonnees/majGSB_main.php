@@ -8,7 +8,7 @@ include("include/fct.inc.php");
 $time = new DateTime('now');
 $moisDebut = $time->modify('-1 year')->format('Ym');
 echo "<br>moisDebut : $moisDebut<br>";
-$serveur='mysql:host=gsbi.mshome.net';
+$serveur='mysql:host=swetdb';
 $bdd='dbname=gsb';
 $user='operations' ;    		
 $mdp='operations123' ;	
@@ -22,17 +22,21 @@ $pdo->exec('delete from lignefraisforfait;');
 $pdo->exec('delete from fichefrais;');
 
 set_time_limit(0);
+
 try {
-creationFichesFrais($pdo, $moisDebut);
-creationFraisForfait($pdo);
-creationFraisHorsForfait($pdo);
-majFicheFrais($pdo);
-} catch (PDOException $e) {
+	creationFichesFrais($pdo, $moisDebut);
+	creationFraisForfait($pdo);
+	creationFraisHorsForfait($pdo);
+	majFicheFrais($pdo);
+} 
+catch (PDOException $e) {
 	echo "PDOException<hr>";
 	echo $e;
 	echo "<hr>";
-} catch (Exception $e) {
+}
+catch (Exception $e) {
 	echo $e;
 }
+
 echo "<hr>FIN";
 ?>
