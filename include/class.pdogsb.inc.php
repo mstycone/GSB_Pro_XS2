@@ -57,7 +57,7 @@ class PdoGsb{
 		$req = "select employe.id as id, employe.nom as nom, employe.prenom as prenom, employe.idtypeemploye as idtypeemploye from employe 
 		where idtypeemploye='V' and employe.login='$login' and employe.mdp='$mdp'";
 		$rs = PdoGsb::$monPdo->query($req);
-		$ligne = $rs->fetch();
+		$ligne = $rs->fetch(); //fetch() retourne qu'un seul enregistrement 
 		return $ligne;
 	}
 /**
@@ -68,11 +68,10 @@ class PdoGsb{
  * @return l'id, le nom et le prénom sous la forme d'un tableau associatif 
 */
 public function getInfosVisiteurs(){
-	$req = "select employe.id as id, employe.nom as nom, employe.prenom as prenom, typeemploye.nom as typeemploye from employe 
-	inner join typeemploye on employe.idtypeemploye=typeemploye.code where
+	$req = "select employe.id as id, employe.nom as nom, employe.prenom as prenom from employe 
 	where idtypeemploye='V' ";
 	$rs = PdoGsb::$monPdo->query($req);
-	$ligne = $rs->fetch();
+	$ligne = $rs->fetchAll(PDO::FETCH_ASSOC); //use PDO::FETCH_ASSOC pour récupérer un tableau associatif
 	return $ligne;
 }
 /**

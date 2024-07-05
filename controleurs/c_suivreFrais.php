@@ -24,7 +24,7 @@
 
 			if (!empty($lesVisiteurs)) {
 				// Pour le premier visiteur récupéré, récupère les mois disponibles
-				$visiteurASelectionner = $LesVisiteurs [0]['id'];
+				$visiteurASelectionner = $lesVisiteurs [0]['id'];
 				// Récupère les mois disponibles pour le visiteur sélectionner
 				$lesMois=$pdo->getLesMoisDisponibles($visiteurASelectionner);
 
@@ -37,11 +37,11 @@
 					include('vues/v_listeVisiteurs.php');
 
 				} else {
-					echo "Aucun mois disponible pour ce visiteur";
+					echo "<span style='color:white; font-size:bold'>Aucun mois disponible pour ce visiteur</span>";
 				}
 
 			} else {
-				echo "Aucun visiteur dans la base de données";
+				echo "<span style='color:white; font-size:bold'>Aucun visiteur dans la base de données</span>";
 			}
 			break;
 		}
@@ -50,13 +50,22 @@
 			$leMois = isset($_REQUEST['lstMois']) ? $_REQUEST['lstMois'] : '';
 			$leVisiteur = isset($_REQUEST['lstVisiteur']) ? $_REQUEST['lstVisiteur'] : '';
 
-			if ($leVisiteur && $leMois){
+			if (!empty($leVisiteur) && !empty($leMois)){
 				// Récupère les informations des visiteurs
-				$lesVisiteurs = $pdo->getInfosVisiteur();
+				$lesVisiteurs = $pdo->getInfosVisiteurs();
 				// Récupère les mois disponibles pour le visiteur
 				$lesMois=$pdo->getLesMoisDisponibles($leVisiteur);
 				$moisASelectionner = $leMois;
 				include('vues/v_listeVisiteurs.php');
+
+				// Récupère les détails du visiteur sélectionné
+				foreach ($lesVisiteurs as $unVisiteur) {
+					if ($unVisiteur['id'] == $leVisiteur) {
+						$nom = $unVisiteur['nom'];
+						$prenom = $unVisiteur['prenom'];
+						break;
+					}
+				}
 
 				// Récupère les frais hors forfait pour le mois sélectionné
 				$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($leVisiteur,$leMois);
@@ -77,7 +86,7 @@
 				include('vues/v_suivreFrais.php');
 
 			} else {
-				echo "Veuillez sélectionner un visiteur et un mois";
+				echo "<span style='color:white; font-size:bold'>Veuillez sélectionner un visiteur et un mois</span>";
 			}
 			break;
 		}	
@@ -85,47 +94,37 @@
 		case 'misePaiement' : {
 			$leVisiteur = isset($_REQUEST['lstVisiteur']) ? $_REQUEST['lstVisiteur'] : '';
 			$leMois = isset($_REQUEST['lstMois']) ? $_REQUEST['lstMois'] : '';
+			$ficheFrais = $pdo->getLesInfosFicheFrais($leVisiteur, $leMois);
+        	$ficheEtat = $ficheFrais['libEtat'];
 
-			if ($leVisiteur && $leMois){
-				$ficheFrais = $pdo->getLesInfosFicheFrais($leVisiteur,$leMois);
-				$ficheEtat = $ficheFrais['idEtat'];
-
-				if ($ficheEtat == 'CL') {
-					// Met à jour les frais forfaitisés en état 'VA':'Validée et mise en paiement'
-					$majEtatFrais= $pdo->majEtatFicheFrais($leVisiteur,$leMois,'VA');
-					echo 'la fiche a bien été mise en paiement';
-
-				} else {
-					echo 'la fiche doit être clôturé avant d\'être mise en paiement';
-				}
+			if ($ficheEtat == 'Saisie clôturée') {
+				// Met à jour les frais forfaitisés en état 'VA':'Validée et mise en paiement'
+				$pdo->majEtatFicheFrais($leVisiteur,$leMois,'VA');
+				echo "<span style='color:white; font-size:bold'>la fiche a bien été mise en paiement</span>";
 
 			} else {
-				echo " Veuillez sélectionner un visiteur et un mois ";
-			} 
+				echo "<span style='color:white; font-size:bold'>la fiche doit être clôturé avant d\'être mise en paiement</sapn>";
+			}
+
 			break;
 			
 		}
 
 		case 'remboursee' : {
-			$leVisiteur = isset($_REQUEST['leVisiteur']) ? $_REQUEST['leVisiteur'] : '';
+			$leVisiteur = isset($_REQUEST['lstVisiteur']) ? $_REQUEST['lstVisiteur'] : '';
 			$leMois = isset($_REQUEST['lstMois']) ? $_REQUEST['lstMois'] : '';
+			$ficheFrais = $pdo->getLesInfosFicheFrais($leVisiteur, $leMois);
+        	$ficheEtat = $ficheFrais['libEtat'];
 
-			if ($leVisiteur && $leMois){
-				$ficheFrais = $pdo->getLesInfosFicheFrais($leVisiteur,$leMois);
-				$ficheEtat = $ficheFrais['idEtat'];
+			if ($ficheEtat == 'Validée et mise en paiement') {
+				// Met à jour les frais forfaitisés en état 'VA':'Validée et mise en paiement'
+				$pdo->majEtatFicheFrais($leVisiteur,$leMois,'RB');
+				echo "<span style='color:white; font-size:bold'>la fiche a bien été remboursée</span>";
 
-					if ($ficheEtat == 'VA') {
-						// Met à jour les frais forfaitisés en état 'VA':'Validée et mise en paiement'
-						$majEtatFrais= $pdo->majEtatFicheFrais($leVisiteur,$leMois,'RB');
-						echo 'la fiche a bien été remboursée';
+			} else { 
+				echo "<span style='color:white; font-size:bold'>la fiche doit être en etat avant d\'être remboursée</span>";
+			}
 
-					} else { 
-						echo 'la fiche doit être en etat "validé et mise en paiement" avant d\'être remboursée';
-					}
-					
-			} else {
-				echo " Veuillez sélectionner un visiteur et un mois ";
-			} 
 			break;
 		}	
 	}

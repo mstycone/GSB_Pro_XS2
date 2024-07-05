@@ -1,7 +1,7 @@
 
   <h3>Détails de la fiche de frais : </h3>
-  <h3> Visiteur : <?php echo $id; $nom; $prenom; ?> </h3>
-  <h3> Mois : <?php $mois; ?> </h3>
+  <h3> Visiteur : <?php echo  $nom." ".$prenom ?> </h3>
+  <h3> Mois : <?php echo $numMois."-".$numAnnee?> </h3>
   <div class="encadre">
     <p>
       Etat : <?php echo $libEtat?> depuis le <?php echo $datemodif?> <br> Montant validé : <?php echo $montantvalide?>
@@ -61,19 +61,18 @@
         ?>
     </table>
     <!-- Actions possible en fonction de l'état de la fiche de frais --> 
-    <?php if ($libEtat  == 'CL') : ?>
+    
       <form action="index.php?uc=suivreFrais&action=misePaiement" method="post">
         <input type="hidden" name="lstVisiteur" value="<?php echo $leVisiteur; ?>">
         <input type="hidden" name="lstMois" value="<?php echo $leMois ; ?>">
-        <input type="submit" value="Mettre en paiement">
+        <input type="submit" value="Mettre en paiement" size="40">
       </form>
-    <?php elseif ($libEtat == 'VA') : ?>
       <form action="index.php?uc=suivreFrais&action=remboursee" method="post">
         <input type="hidden" name="lstVisiteur" value="<?php echo $leVisiteur; ?>">
         <input type="hidden" name="lstMois" value="<?php echo $leMois ; ?>">
-        <input type="submit" value="Remboursée">
+        <input type="submit" action="index.php?uc=suivreFrais&action=remboursee" value="Remboursée" size="40">
       </form>
-    <?php endif; ?>
+    
   </div>
 </div>
  

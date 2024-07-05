@@ -14,6 +14,7 @@
                     <!-- la ƒ onchange soumet automatiquement le formulaire une fois 
                     le visiteur sélectionné. Affiche directement le résultat sans valider. 
                     Meilleur ergonomie-->
+                   <!-- <option value="">--À sélectionner--</option> -->
                     <?php
                         // Parcourt tous les visiteurs disponibles
                         foreach ($lesVisiteurs as $unVisiteur) {
@@ -26,11 +27,11 @@
                             // Vérifie si ce visiteur est celui sélectionné par défaut
                             if($id == $visiteurASelectionner){
                             ?>
-                            <option selected value="<?php echo $id ?>"><?php echo  $nom."/".$prenom ?> </option>
+                            <option selected value="<?php echo $id ?>"><?php echo  $nom." ".$prenom ?> </option>
                             <?php 
                             }
                             else{ ?>
-                            <option value="<?php echo $id ?>"><?php echo  $nom."/".$prenom ?> </option>
+                            <option value="<?php echo $id ?>"><?php echo  $nom." ".$prenom ?> </option>
                             <?php 
                             }			
                         }
@@ -39,6 +40,7 @@
                     
                 <label for="lstMois" accesskey="n">Mois : </label>
                 <select id="lstMois" name="lstMois">
+                     <!-- <option value="">--À sélectionner--</option> -->
                     <?php
                         // Parcourt tous les mois disponibles
                         foreach ($lesMois as $unMois) {

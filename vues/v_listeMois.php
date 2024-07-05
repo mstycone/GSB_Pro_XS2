@@ -10,6 +10,7 @@
         <p>
           <label for="lstMois" accesskey="n">Mois : </label>
           <select id="lstMois" name="lstMois">
+           <!-- <option value="">--À sélectionner--</option> -->
             <?php
               // Parcourt tous les mois disponibles
               foreach ($lesMois as $unMois)
